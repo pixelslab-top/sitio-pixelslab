@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Redirect URI (callback) page for Mia Valeska Uploader. TikTok returns the account owner here with an authorization code after they authorize the app." />
+    <link rel="icon" href="data:," />
+    <title>TikTok connection — Mia Valeska Uploader</title>
+    <style>
+      :root {
+        --bg: #faf7fc;
+        --surface: #ffffff;
+        --surface-2: #f3ecf8;
+        --ink: #221331;
+        --ink-soft: #5c4a72;
+        --line: #e3d5ef;
+        --purple-deep: #5b21b6;
+        --pink: #ec4899;
+        --pink-hot: #ff2e9a;
+        --accent-grad: linear-gradient(92deg, #7c3aed 0%, #d6339f 55%, #ff2e9a 100%);
+        --code-bg: #221331;
+        --code-ink: #ffd7ef;
+        --ok: #0e9f6e;
+        --warn-bg: #fdf3e3;
+        --warn-line: #f0d9ae;
+        --warn-ink: #7a5410;
+        --shadow: 0 10px 30px rgba(91, 33, 182, 0.10);
+        --radius: 14px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #12081f;
+          --surface: #1c0f30;
+          --surface-2: #251440;
+          --ink: #f4ecff;
+          --ink-soft: #c3aede;
+          --line: #3a2560;
+          --purple-deep: #c4b5fd;
+          --pink: #f472b6;
+          --pink-hot: #ff4da6;
+          --code-bg: #0a0514;
+          --code-ink: #ffb3dd;
+          --ok: #34d399;
+          --warn-bg: #2e2410;
+          --warn-line: #5c4a1e;
+          --warn-ink: #f5cf7d;
+          --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: var(--purple-deep); }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+      header.site { border-bottom: 1px solid var(--line); background: var(--surface); position: sticky; top: 0; z-index: 10; }
+      .nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 10px; padding-bottom: 10px; }
+      .brand { font-weight: 800; font-size: 1.02rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 9px; min-height: 36px; }
+      .brand .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent-grad); flex: none; }
+      .brand em { font-style: normal; color: var(--pink-hot); }
+      nav.links { display: flex; gap: 4px; flex-wrap: wrap; }
+      nav.links a { color: var(--ink-soft); text-decoration: none; font-weight: 600; font-size: 0.92rem; padding: 8px 12px; border-radius: 9px; display: inline-flex; align-items: center; min-height: 36px; }
+      nav.links a:hover { color: var(--ink); background: var(--surface-2); }
+
+      main { padding: 44px 0 20px; }
+      .status-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+      .status-card h1 { font-size: 1.6rem; margin: 0 0 10px; letter-spacing: -0.01em; font-weight: 800; }
+      .status-card p { color: var(--ink-soft); margin: 0 0 12px; }
+      .status-card p strong { color: var(--ink); }
+      .status-badge { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.9rem; padding: 6px 14px; border-radius: 999px; margin-bottom: 18px; background: var(--surface-2); color: var(--ink-soft); }
+      .status-badge.ok { color: var(--ok); }
+      .status-badge .pulse { width: 9px; height: 9px; border-radius: 50%; background: currentColor; }
+      .code-box { background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 16px 18px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.9rem; word-break: break-all; margin: 6px 0 14px; line-height: 1.5; }
+      .code-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); font-weight: 700; margin-top: 16px; }
+      .copy-btn { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font: inherit; font-weight: 700; font-size: 0.92rem; background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); padding: 9px 18px; border-radius: 10px; min-height: 40px; }
+      .copy-btn:hover { border-color: var(--pink); color: var(--pink-hot); }
+      .connect-btn { display: inline-flex; align-items: center; gap: 11px; background: var(--ink); color: var(--bg); border: none; cursor: pointer; text-decoration: none; font: inherit; font-weight: 800; font-size: 1rem; padding: 13px 24px; border-radius: 12px; min-height: 52px; box-shadow: var(--shadow); }
+      .connect-btn:hover { opacity: 0.88; }
+      .connect-btn svg { flex: none; }
+      .alert { border-radius: 10px; padding: 14px 18px; font-size: 0.95rem; margin: 0 0 16px; background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn-ink); }
+      .hidden { display: none !important; }
+
+      footer.site { border-top: 1px solid var(--line); margin-top: 60px; padding: 26px 0 34px; background: var(--surface); }
+      .foot { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center; justify-content: space-between; }
+      .foot nav { display: flex; gap: 6px; flex-wrap: wrap; }
+      .foot nav a { color: var(--ink-soft); font-weight: 600; font-size: 0.92rem; text-decoration: none; padding: 8px 10px; display: inline-flex; align-items: center; min-height: 36px; border-radius: 8px; }
+      .foot nav a:hover { color: var(--pink-hot); }
+      .foot .fine { color: var(--ink-soft); font-size: 0.86rem; }
+      .foot .fine a { color: var(--ink-soft); }
+    </style>
+  </head>
+  <body>
+    <header class="site">
+      <div class="wrap nav">
+        <a class="brand" href="index.html"><span class="dot" aria-hidden="true"></span>Mia Valeska <em>Uploader</em></a>
+        <nav class="links" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="status-card">
+        <span class="status-badge" id="cbBadge"><span class="pulse" aria-hidden="true"></span><span id="cbBadgeText">Waiting for TikTok</span></span>
+        <h1 id="cbTitle">TikTok connection</h1>
+
+        <div class="alert hidden" id="cbError" role="alert"></div>
+
+        <div id="cbSuccess" class="hidden">
+          <p><strong>The connection was completed.</strong> TikTok authorized Mia Valeska Uploader and returned an authorization code to this page. The app exchanges this code with TikTok to finish connecting the account, after which videos can be uploaded as drafts or direct posts.</p>
+          <p class="code-label">Authorization code</p>
+          <div class="code-box" id="cbCode">—</div>
+          <button class="copy-btn" id="copyCodeBtn" type="button">Copy code</button>
+          <p class="hidden" id="cbScopesLine" style="margin-top:16px;">Granted scopes: <span id="cbScopes"></span></p>
+        </div>
+
+        <div id="cbWaiting">
+          <p>This page is the <strong>redirect URI</strong> for Mia Valeska Uploader. TikTok sends the account owner back here after they authorize the app on TikTok's site, together with an authorization code in the address bar.</p>
+          <p>If you just came from TikTok and no code appears here, the authorization may have been cancelled or the link may have expired. You can start again from the beginning:</p>
+          <button class="connect-btn" id="connectBtn" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+            Connect with TikTok
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site">
+      <div class="wrap foot">
+        <nav aria-label="Legal">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+          <a href="index.html">Home</a>
+        </nav>
+        <p class="fine">© 2026 Mia Valeska Uploader · Contact: <a href="mailto:mia.valeska011@gmail.com">mia.valeska011@gmail.com</a></p>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var CLIENT_KEY = "awnxr2dcpxq0aplu";
+        var SCOPES = "user.info.basic,video.upload,video.publish";
+
+        function redirectUri() {
+          // This page itself is the redirect URI: TikTok returns here with ?code=...
+          return window.location.origin + window.location.pathname;
+        }
+
+        function connect() {
+          var state = Math.random().toString(36).slice(2) + Date.now().toString(36);
+          var url = "https://www.tiktok.com/v2/auth/authorize/"
+            + "?client_key=" + encodeURIComponent(CLIENT_KEY)
+            + "&scope=" + encodeURIComponent(SCOPES)
+            + "&response_type=code"
+            + "&redirect_uri=" + encodeURIComponent(redirectUri())
+            + "&state=" + encodeURIComponent(state);
+          window.location.assign(url);
+        }
+
+        function initCallback() {
+          var params = new URLSearchParams(window.location.search);
+          var code = params.get("code");
+          var error = params.get("error");
+          var errorDesc = params.get("error_description");
+          var scopes = params.get("scopes");
+          var badge = document.getElementById("cbBadge");
+          var badgeText = document.getElementById("cbBadgeText");
+          var title = document.getElementById("cbTitle");
+
+          if (error) {
+            badgeText.textContent = "Authorization not completed";
+            title.textContent = "TikTok connection failed";
+            var box = document.getElementById("cbError");
+            box.textContent = "TikTok returned an error: " + error + (errorDesc ? " — " + errorDesc : "")
+              + ". No connection was made. You can try connecting again below.";
+            box.classList.remove("hidden");
+            return;
+          }
+
+          if (code) {
+            badge.classList.add("ok");
+            badgeText.textContent = "Connected";
+            title.textContent = "Connection completed";
+            document.getElementById("cbWaiting").classList.add("hidden");
+            document.getElementById("cbSuccess").classList.remove("hidden");
+            document.getElementById("cbCode").textContent = code;
+            if (scopes) {
+              document.getElementById("cbScopes").textContent = scopes.split(",").join(", ");
+              document.getElementById("cbScopesLine").classList.remove("hidden");
+            }
+          }
+        }
+
+        document.getElementById("connectBtn").addEventListener("click", connect);
+
+        var copyBtn = document.getElementById("copyCodeBtn");
+        copyBtn.addEventListener("click", function () {
+          var code = document.getElementById("cbCode").textContent;
+          function done() {
+            copyBtn.textContent = "Copied";
+            setTimeout(function () { copyBtn.textContent = "Copy code"; }, 2000);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(code).then(done, done);
+          } else {
+            var ta = document.createElement("textarea");
+            ta.value = code;
+            ta.setAttribute("readonly", "");
+            ta.style.position = "absolute";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand("copy"); } catch (e) {}
+            document.body.removeChild(ta);
+            done();
+          }
+        });
+
+        initCallback();
+      })();
+    </script>
+  </body>
+</html>
